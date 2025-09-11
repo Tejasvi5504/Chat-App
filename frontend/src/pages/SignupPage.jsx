@@ -61,6 +61,7 @@ const SignupPage = () => {
           <div className='text-center mb-8'>
             <div className='flex flex-col items-center gap-2 group'>
               <div className='w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors'>
+  
                 <MessageSquare className='w-6 h-6 text-blue-600' />
               </div>
               <h1 className='text-2xl font-bold mt-2'>Create Account</h1>
