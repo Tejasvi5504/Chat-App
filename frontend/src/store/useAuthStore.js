@@ -3,15 +3,15 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = "http://localhost:5001";
-export const useAuthStore = create((set,get) => ({
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001/api" : "/";
+export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
   isLogingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true,
   onlineUsers: [],
-  socket:null,
+  socket: null,
 
   checkAuth: async () => {
     try {
@@ -48,6 +48,7 @@ export const useAuthStore = create((set,get) => ({
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
       toast.success("Logged out successfully");
+      get().disconnectSocket();
     } catch (error) {
       toast.error(error.response?.data?.message || "Logout failed");
     }
@@ -81,14 +82,20 @@ export const useAuthStore = create((set,get) => ({
     }
   },
   connectSocket: () => {
-    const authUser = get()
-    if(!authUser || get().socket.connected) return;
-    socket = io(BASE_URL);
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
+    const socket = io(BASE_URL, {
+      query: { userId: authUser._id },
+    });
     socket.connect();
-
-},
-  disconnectSocket: () => {
-
+    set({ socket: socket });
+    socket.on("online-users", (users) => {
+      set({ onlineUsers: users });
+    });
   },
-
+  disconnectSocket: () => {
+    if(get().socket?.connected){
+      get().socket.disconnect();
+    } 
+  },
 }));

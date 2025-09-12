@@ -43,31 +43,31 @@ const MessageInput = () => {
     }
   };
   return (
-    <div className='p-4 w-full'>
+    <div className='p-2 sm:p-4 w-full border-t border-base-300'>
       {imagePreview && (
         <div className='mb-3 flex items-center gap-2'>
           <div className='relative'>
             <img
               src={imagePreview}
               alt='Preview'
-              className='w-20 h-20 object-cover rounded-lg border border-zinc-700'
+              className='w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg border border-zinc-700'
             />
             <button
               onClick={removeImage}
-              className='absolute -top-2 -right-2  text-white rounded-full bg-base-300 flex items-center justify-center w-5 h-5'
+              className='absolute -top-1 -right-1 sm:-top-2 sm:-right-2 text-white rounded-full bg-base-300 flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6'
               type='button'>
-              <X className='w-3 h-3' />
+              <X className='w-3 h-3 sm:w-4 sm:h-4' />
             </button>
           </div>
         </div>
       )}
       <form onSubmit={handleSendMessage} className='flex items-center gap-2'>
-        <div className='flex-1 flex gap-2'>
+        <div className='flex-1 flex gap-1 sm:gap-2'>
           <input
             type='text'
             placeholder='Type a message...'
             value={text}
-            className='w-full input input-bordered rounded-lg input-sm sm:input-md'
+            className='flex-1 input input-bordered rounded-lg input-sm sm:input-md text-sm sm:text-base'
             onChange={(e) => setText(e.target.value)}
           />
           <input
@@ -80,18 +80,18 @@ const MessageInput = () => {
 
           <button
             type='button'
-            className={`hidden sm:flex btn btn-circle ${
+            className={`btn btn-circle btn-sm sm:btn-md ${
               imagePreview ? "btn-primary" : "btn-ghost"
             }`}
             onClick={() => fileInputRef.current?.click()}>
-            <Image size={20} />
+            <Image className='w-4 h-4 sm:w-5 sm:h-5' />
           </button>
         </div>
         <button
           type='submit'
-          className='btn btn-primary btn-sm sm:btn-md'
+          className='btn btn-primary btn-sm sm:btn-md flex-shrink-0'
           disabled={!text.trim() && !imagePreview}>
-          <Send size={22} />
+          <Send className='w-4 h-4 sm:w-5 sm:h-5' />
         </button>
       </form>
     </div>
